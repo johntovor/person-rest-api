@@ -1,0 +1,20 @@
+databases:
+  - name: person_api_pro
+    databaseName: person_api_pro
+    user: person_api_pro
+
+services:
+  - type: web
+    name: person_api_pro
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn person_api_pro.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: person_api_pro
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
